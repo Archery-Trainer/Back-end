@@ -1,4 +1,3 @@
-package com.mycompany.app;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -16,7 +15,7 @@ public class Main {
 		ArrayList<String> list = new ArrayList<String>();
 		
 		//Callback that will be called when a message arrives
-		AddToCollectionCallback cb = new AddToCollectionCallback(list);
+		OnMessageCallback cb = new AddToCollectionCallback(list);
 		
 		MQTT_client c = new MQTT_client(cb);
 		//The client is not needed anymore
@@ -24,13 +23,14 @@ public class Main {
 		
 		int i = 0;
 		while(true) {
+
 			if(list.size() > i) {
 				//Print out a message
-				System.out.println(list.get(i));				
+				System.out.println(list.get(i));
 				i++;
 			}
+
 		}
-		
 	}
 
 }

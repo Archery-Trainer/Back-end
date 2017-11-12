@@ -1,4 +1,3 @@
-package com.mycompany.app;
 
 import java.util.Collection;
 
@@ -6,7 +5,7 @@ import java.util.Collection;
  * Utility to add messages to a list when they are received. The list is provided by the caller. 
  *
  */
-public class AddToCollectionCallback {
+public class AddToCollectionCallback implements OnMessageCallback{
 	private Collection<String> storage;
 	
 	/**
@@ -25,5 +24,5 @@ public class AddToCollectionCallback {
 	public void call(String message) {
 		storage.add(message);
 	}
-	
+
 }

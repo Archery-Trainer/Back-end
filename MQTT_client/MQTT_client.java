@@ -1,4 +1,3 @@
-package com.mycompany.app;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -114,7 +113,7 @@ public class MQTT_client {
 	 */
 	private class TopicListener extends AWSIotTopic {
 		
-		AddToCollectionCallback onMsg;
+		OnMessageCallback onMsg;
 
 		
 		/**
@@ -123,7 +122,7 @@ public class MQTT_client {
 		 * @param topic	Topic to subscribe to
 		 * @param qos	?
 		 */
-		public TopicListener(String topic, AWSIotQos qos, AddToCollectionCallback onMsgCallback) {
+		public TopicListener(String topic, AWSIotQos qos, OnMessageCallback onMsgCallback) {
 		    super(topic, qos);
 		    onMsg = onMsgCallback;
 		}
@@ -147,7 +146,7 @@ public class MQTT_client {
 	 * Construct client and subscribe to topic #. 
 	 * 
 	 */
-	public MQTT_client(AddToCollectionCallback onMsgCallback) {
+	public MQTT_client(OnMessageCallback onMsgCallback) {
 		try {
 
 		    init();
