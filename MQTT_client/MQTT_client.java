@@ -1,4 +1,3 @@
-package com.mycompany.app;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,6 +6,9 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.function.Function;
 
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.amazonaws.services.iot.client.AWSIotQos;
@@ -43,7 +45,9 @@ public class MQTT_client {
 	
 	//@TODO: How to pass this address to the MQTT server? 
 	private static final String CLIENT_ENDPOINT = "a20pmpdacgwj4.iot.us-east-1.amazonaws.com";
-	private static final String CLIENT_ID = "ihansama";				// This just needs to be unique for every client
+	//CLIENT_ID needs to be unique for every client and during testing the connection gets messed up if I 
+	//make multiple subsequent connections with the same id. So here's a hacky one-liner to generate a random string
+	private static final String CLIENT_ID = Long.toHexString(Double.doubleToLongBits(Math.random()));
 	private static final String TEST_TOPIC = "#";					// # is wildcard
 	private static final AWSIotQos TestTopicQos = AWSIotQos.QOS0; 	//Don't know what this is	
 	
@@ -83,6 +87,9 @@ public class MQTT_client {
 
 			//Initialize the client with our credentials
 			awsIotClient = new AWSIotMqttClient(CLIENT_ENDPOINT, CLIENT_ID, keyStore, keyPassword);
+			
+			System.out.println("Connected to " + CLIENT_ENDPOINT + " as " + CLIENT_ID);
+			
 		
        }
 		
@@ -105,9 +112,9 @@ public class MQTT_client {
 	 * MQTT-message listener
 	 */
 	private class TopicListener extends AWSIotTopic {
+		
+		OnMessageCallback onMsg;
 
-		//@TODO: It would be cool if I could pass a function reference to this listener
-		// that gets called in onMessage...
 		
 		/**
 		 * Construct a TopicListener
@@ -115,8 +122,9 @@ public class MQTT_client {
 		 * @param topic	Topic to subscribe to
 		 * @param qos	?
 		 */
-		public TopicListener(String topic, AWSIotQos qos) {
+		public TopicListener(String topic, AWSIotQos qos, OnMessageCallback onMsgCallback) {
 		    super(topic, qos);
+		    onMsg = onMsgCallback;
 		}
 
 		/**
@@ -126,24 +134,26 @@ public class MQTT_client {
 		 */
 		@Override
 		public void onMessage(AWSIotMessage message) {
-		    System.out.println(message.getStringPayload());
+			
+			onMsg.call(message.getStringPayload());
+			
 		}
 
 	}
-	
+		
 	
 	/**
 	 * Construct client and subscribe to topic #. 
 	 * 
 	 */
-	public MQTT_client() {
+	public MQTT_client(OnMessageCallback onMsgCallback) {
 		try {
 
 		    init();
 
 		    awsIotClient.connect();
 		    
-		    AWSIotTopic topic = new TopicListener(TEST_TOPIC, TestTopicQos);
+		    AWSIotTopic topic = new TopicListener(TEST_TOPIC, TestTopicQos, onMsgCallback);
 		    awsIotClient.subscribe(topic, true);
 
     		System.out.println("Subscribed to topic " + TEST_TOPIC);
