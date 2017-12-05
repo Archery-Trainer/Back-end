@@ -96,7 +96,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<runTarget>http://localhost:8080</runTarget>
+					<runTarget>http://localhost:80</runTarget>
 					<generateJsInteropExports>true</generateJsInteropExports>
 					
 					<webappDirectory>${project.build.directory}/classes/public</webappDirectory>
