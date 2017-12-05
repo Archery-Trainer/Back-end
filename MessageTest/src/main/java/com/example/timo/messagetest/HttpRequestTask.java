@@ -20,7 +20,7 @@ public class HttpRequestTask extends AsyncTask<Void, Void, Message> {
     protected Message doInBackground(Void... params) {
         try {
             System.out.println("Sending HTTP request");
-            final String url = "ec2-54-208-42-165.compute-1.amazonaws.com:80/message";
+            final String url = "http://ec2-54-208-42-165.compute-1.amazonaws.com:80/message";
             RestTemplate restTemplate = new RestTemplate();
             System.out.println("");
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
