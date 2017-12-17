@@ -35,36 +35,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		<!-- Needed to get the EntryPoint class -->
+
 		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>${gwt.version}</version>
-			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<artifactId>validation-api</artifactId>
-					<groupId>javax.validation</groupId>
-				</exclusion>
-			</exclusions>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-iot-device-sdk-java</artifactId>
+			<version>1.1.1</version>
 		</dependency>
-		
-		<!-- Library to integrate GWT with Angular2 -->
-		<dependency>
-			<groupId>fr.lteconsulting</groupId>
-			<artifactId>angular2-gwt</artifactId>
-			<version>${angular2-gwt.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		
-		<!-- Use this to integrate with legacy applications
-		<dependency>
-			<groupId>fr.lteconsulting</groupId>
-			<artifactId>angular2-gwt.integration</artifactId>
-			<version>1.7</version>
-			<scope>provided</scope>
-		</dependency> -->
+
 	</dependencies>
 	
 	<build>
