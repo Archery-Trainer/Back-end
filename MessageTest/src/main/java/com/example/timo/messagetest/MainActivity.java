@@ -3,6 +3,9 @@ package com.example.timo.messagetest;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import mqttClient.MqttClient;
+import mqttClient.MqttMessageHandler;
+
 /*
  * This small app sends HTTP requests to the server running in a virtual machine, and creates
  * Message objects based on the recieved JSON-file.
@@ -28,6 +31,7 @@ import android.support.v7.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity{
 
     private final int REQUEST_INTERVAL_MS = 2000;
+    private MqttMessageHandler mqttHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +42,30 @@ public class MainActivity extends AppCompatActivity{
     protected void onStart() {
         super.onStart();
 
+        mqttHandler = new MqttMessageHandler(this);
+
+        listenMQTT();
+
+        /*
+        //Test http requests
         while(true) {
             try {
                 Thread.sleep(REQUEST_INTERVAL_MS);
             } catch (Exception e) {}
+
             new HttpRequestTask().execute();
         }
+        */
+    }
+
+    private void listenMQTT() {
+
+        while(true) {
+            String s = MqttMessageHandler.getNewestMessage();
+
+            System.out.println(s);
+        }
+
     }
 
 }
