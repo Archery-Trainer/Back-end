@@ -1,7 +1,9 @@
 package Archery_trainer.server;
 
 
-public class Archer {
+import java.io.Serializable;
+
+public class Archer implements Serializable {
 
     private String name;
     private boolean rightHanded;
@@ -15,6 +17,8 @@ public class Archer {
         name = _name;
         rightHanded = true;
     }
+
+    public Archer() {}
 
     public String getName() {
         return name;

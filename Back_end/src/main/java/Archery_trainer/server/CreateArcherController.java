@@ -1,10 +1,10 @@
 package Archery_trainer.server;
 
+import com.google.gson.Gson;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -14,13 +14,15 @@ public class CreateArcherController {
 
 
     //Recieve Archer object and print it. Return OK.
-    @RequestMapping(value = "/createArcher")
-    public ResponseEntity<Archer> get(@RequestBody Archer a) {
+    @RequestMapping(value = "/createArcher", method = RequestMethod.POST)
+    public Archer get(@RequestBody String s) {
 
-        System.out.println("Recieved: " + a.toString());
+        Gson gson = new Gson();
+        Archer a = gson.fromJson(s, Archer.class);
 
-        return new ResponseEntity<Archer>(a, HttpStatus.OK);
+        System.out.println("Created new archer: " + a.toString());
 
+        return a;
     }
 
 }
