@@ -1,5 +1,7 @@
 package com.example.timo.messagetest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by Timo on 21.12.2017.
  */
@@ -9,15 +11,18 @@ public class Archer {
     private String name;
     private boolean rightHanded;
 
-    public Archer(String _name, boolean _rightHanded) {
+    public Archer(@JsonProperty("name")String _name,
+                  @JsonProperty("rightHanded")boolean _rightHanded) {
         name = _name;
         rightHanded = _rightHanded;
     }
 
-    public Archer(String _name) {
+    public Archer(@JsonProperty("name")String _name) {
         name = _name;
         rightHanded = true;
     }
+
+    public Archer() {}
 
     public String getName() {
         return name;
