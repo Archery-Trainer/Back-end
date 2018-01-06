@@ -2,11 +2,13 @@ package com.example.timo.messagetest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+
 /**
  * Created by Timo on 21.12.2017.
  */
 
-public class Archer {
+public class Archer implements Serializable{
 
     private String name;
     private boolean rightHanded;
