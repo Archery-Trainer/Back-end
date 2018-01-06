@@ -30,7 +30,7 @@ import mqttClient.MqttMessageHandler;
 
 public class MainActivity extends AppCompatActivity{
 
-    private final int REQUEST_INTERVAL_MS = 2000;
+    private final int REQUEST_INTERVAL_MS = 5000;
     private MqttMessageHandler mqttHandler;
 
     @Override
@@ -42,20 +42,20 @@ public class MainActivity extends AppCompatActivity{
     protected void onStart() {
         super.onStart();
 
-        mqttHandler = new MqttMessageHandler(this);
+        //mqttHandler = new MqttMessageHandler(this);
 
-        listenMQTT();
+        //listenMQTT();
 
-        /*
+
         //Test http requests
         while(true) {
             try {
                 Thread.sleep(REQUEST_INTERVAL_MS);
             } catch (Exception e) {}
 
-            new HttpRequestTask().execute();
+            new CreateArcherTask().execute();
         }
-        */
+
     }
 
     private void listenMQTT() {
