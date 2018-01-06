@@ -3,6 +3,11 @@ package com.example.timo.messagetest;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 public class CreateArcherTask extends AsyncTask<Void, Void, Archer> {
 
     //@TODO: how to handle urls?
-    final String URL = "http://ec2-54-208-42-165.compute-1.amazonaws.com:80/CreateArcher";
+    final String URL = "http://ec2-54-208-42-165.compute-1.amazonaws.com:80/createArcher";
 
     /**
      * Send a http request to the server to create a new archer
@@ -24,14 +29,23 @@ public class CreateArcherTask extends AsyncTask<Void, Void, Archer> {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
+            //Create test archer and convert to json
+            Gson gson = new Gson();
             Archer a = new Archer("Testiheppu", false);
+            String requestJson = gson.toJson(a);
 
-            System.out.println("Sending POST request with " + a.toString());
+            System.out.println("req: " + requestJson);
 
-            Archer res = restTemplate.postForObject(URL, a, Archer.class);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
+            HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
 
-            return res;
+            //Send POST
+            Archer answer = restTemplate.postForObject(URL, requestJson, Archer.class);
+            System.out.println("Answer: " + answer.toString());
+
+            return answer;
         } catch (Exception e) {
             Log.e("createArcher", e.getMessage(), e);
         }
