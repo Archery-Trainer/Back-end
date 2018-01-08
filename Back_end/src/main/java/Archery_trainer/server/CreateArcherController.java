@@ -15,7 +15,7 @@ public class CreateArcherController {
 
     //Recieve json, convert it to Archer object and return it
     @RequestMapping(value = "/createArcher", method = RequestMethod.POST)
-    public String get(@RequestBody String s) {
+    public String createArcher(@RequestBody String s) {
 
 
 	System.out.println("Recieved createArcher request: " + s);
