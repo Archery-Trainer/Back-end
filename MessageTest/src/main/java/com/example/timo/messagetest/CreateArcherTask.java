@@ -34,7 +34,8 @@ public class CreateArcherTask extends AsyncTask<Void, Void, Archer> {
 
             //Create test archer and a HTTP entity from it
             Gson gson = new Gson();
-            a = new Archer("Testiheppu2", false);
+            a = new Archer("Testiheppu2", "Joo", false);
+            System.out.println(a.toString());
             HttpEntity<Archer> entity = new HttpEntity<Archer>(a);
 
             //Send POST

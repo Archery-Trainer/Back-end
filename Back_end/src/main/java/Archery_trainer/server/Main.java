@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {"Archery_trainer.server"})
 public class Main {
 
+	public static DatabaseConnection databaseConnection;
 	private static MqttMessageHandler messageHandler;
 
 	@RequestMapping( "/test" )
@@ -21,7 +22,17 @@ public class Main {
 	}
 
 	public static void main( String[] args ) throws Exception {
+
+		if(args.length == 3) {
+			databaseConnection = new DatabaseConnection(args[0], args[1], args[2]);
+		} else {
+			System.out.println("Arguments: <database name> <database username> <database password>");
+			return;
+		}
+
+
 		System.out.println("Starting app...");
+
 		SpringApplication.run( Main.class, args );
 
 		if(messageHandler == null)
