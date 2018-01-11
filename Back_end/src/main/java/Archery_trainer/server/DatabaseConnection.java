@@ -27,9 +27,13 @@ public class DatabaseConnection {
             Statement ps = conn.createStatement();
             ResultSet res = ps.executeQuery(query);
 
-            if(res.next()) {
+            conn.close();
+            res.close();
+
+            if(res.first()) {
                 return res.getInt(1);
             }
+
         } catch (SQLException e) {
             System.out.println("Bad response");
             e.printStackTrace();
@@ -48,6 +52,12 @@ public class DatabaseConnection {
         //Create connection
         try (Connection conn = DriverManager.getConnection(url, username, password)){
 
+            //See if archer already registered
+            if(getArcher(a.getFirstName(), a.getLastName()) != null) {
+                System.out.println("Archer already registered, nothing done");
+                return;
+            }
+
             //Create statement and set the archer's values
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, a.getFirstName());
@@ -58,11 +68,73 @@ public class DatabaseConnection {
 
             pstmt.execute();
 
+            conn.close();
+
         } catch (SQLException e) {
             System.out.println("Bad response");
             e.printStackTrace();
         }
 
+    }
+
+    /*
+
+    @return the Archer object if found, NULL if not found!
+     */
+    public Archer getArcher(String fName, String lName) {
+        String query = "SELECT * FROM " + Archer.getTableName() + " WHERE Fname = \"" + fName +
+                "\" AND Lname = \"" + lName + "\";" ;
+
+        //Create connection
+        try (Connection conn = DriverManager.getConnection(url, username, password)){
+
+            //Create statement and set values into it
+            PreparedStatement pstmt = conn.prepareStatement(query);
+
+            ResultSet res = pstmt.executeQuery();
+
+            if(res.wasNull() || !res.first())
+                return null;
+
+            Archer a = new Archer(
+                    res.getString(2),   //Fname
+                    res.getString(3),   //Lname
+                    res.getInt(4),      //CoachId
+                    res.getInt(5),      //Weight
+                    res.getInt(6),      //Height
+                    res.getBoolean(7)); //rightHanded
+
+            conn.close();
+            res.close();
+
+            return a;
+
+        } catch (SQLException e) {
+            System.out.println("Bad response");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void deleteArcher(String fName, String lName) {
+
+        String query = "DELETE FROM " + Archer.getTableName() + " WHERE Fname = \"" + fName +
+                "\" AND Lname = \"" + lName + "\";" ;
+
+        //Create connection
+        try (Connection conn = DriverManager.getConnection(url, username, password)){
+
+            //Create statement and execute
+            PreparedStatement pstmt = conn.prepareStatement(query);
+
+            pstmt.execute();
+
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("Bad response");
+            e.printStackTrace();
+        }
     }
 
 }
