@@ -1,11 +1,16 @@
-package Archery_trainer.server;
+package Archery_trainer.server.controllers;
 
+import Archery_trainer.server.databaseOperations.AlreadyRegisteredException;
+import Archery_trainer.server.models.Archer;
+import Archery_trainer.server.databaseOperations.ArcherDatabaseOperations;
 import com.google.gson.Gson;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.sql.SQLException;
 
 
 @RestController
@@ -24,7 +29,18 @@ public class CreateArcherController {
     Archer a = gson.fromJson(s, Archer.class);
 
     //Store archer to database
-    Main.databaseConnection.insertArcher(a);
+    try {
+        ArcherDatabaseOperations.insertArcher(a);
+    } catch (SQLException e) {
+        System.out.println("Unable to insert archer into database");
+        e.printStackTrace();
+
+        return "";
+    }  catch (AlreadyRegisteredException e) {
+        System.out.println("Archer of name " + a.getFirstName() + " " + a.getLastName()
+                + "already registered");
+        e.printStackTrace();
+    }
 
     System.out.println("Created new archer: " + a.toString());
 

@@ -1,4 +1,4 @@
-package Archery_trainer.server;
+package Archery_trainer.server.models;
 
 
 import java.io.Serializable;
