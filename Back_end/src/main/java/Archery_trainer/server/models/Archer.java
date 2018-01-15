@@ -1,6 +1,5 @@
-package com.example.timo.messagetest;
+package Archery_trainer.server.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
