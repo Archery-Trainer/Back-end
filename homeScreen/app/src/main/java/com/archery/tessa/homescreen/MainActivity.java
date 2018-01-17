@@ -7,6 +7,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.archery.tessa.homescreen.models.Archer;
+import com.archery.tessa.homescreen.tasks.CreateArcherTask;
+
+import mqttClient.MqttMessageHandler;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -24,5 +29,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        /*
+        To listen to the MQTT channel for sensor messages, just create this MqttMessageHandler object.
+        You can get the newest message with the handler's method getNewestMessage()
+        NOTE:   you must add the androidkeystore -file from our google drive's keys and certificates folder
+                to app/src/main/assets. Create this directory if it doesn't exist
+
+        MqttMessageHandler msgHandler = new MqttMessageHandler(this);
+        */
+
+        /*
+        How to send archer object to server and database
+
+        Archer testArcher = new Archer("Matti", "Ahmatti", -1, 120, 190, false);
+        new CreateArcherTask(testArcher).execute(this);
+        */
 
 }}
