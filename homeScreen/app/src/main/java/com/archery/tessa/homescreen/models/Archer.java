@@ -1,4 +1,4 @@
-package com.example.timo.messagetest;
+package com.archery.tessa.homescreen.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -99,3 +99,4 @@ public class Archer implements Serializable {
     }
 
 }
+

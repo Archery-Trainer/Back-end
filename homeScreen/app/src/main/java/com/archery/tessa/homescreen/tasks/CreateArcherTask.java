@@ -1,5 +1,11 @@
-package com.example.timo.messagetest;
+package com.archery.tessa.homescreen.tasks;
 
+import com.archery.tessa.homescreen.SessionActivity;
+import com.archery.tessa.homescreen.models.Archer;
+import com.archery.tessa.homescreen.R;
+
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -12,20 +18,34 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 
-public class CreateArcherTask extends AsyncTask<Void, Void, Archer> {
+public class CreateArcherTask extends AsyncTask<Context, Void, Archer> {
 
-    //@TODO: how to handle urls?
-    final String URL = "http://ec2-54-208-42-165.compute-1.amazonaws.com:80/createArcher";
+    private Archer archer;
+
+    /**
+     * Construct task that will send an archer to serveer
+     *
+     * @param a     The archer to create
+     */
+    public CreateArcherTask(Archer a) {
+        super();
+        archer = a;
+    }
+
 
     /**
      * Send a http request to the server to create a new archer
      *
-     * @param params
+     * @param params    reference to the caller activity's context
      * @return
      */
     @Override
-    protected Archer doInBackground(Void... params) {
-        Archer a = null;
+    protected Archer doInBackground(Context... params) {
+        if(params.length != 1) {
+            System.out.println("Pass a context to the task");
+            return null;
+        }
+
         try {
             //Create rest template and json converter
             RestTemplate restTemplate = new RestTemplate();
@@ -34,12 +54,13 @@ public class CreateArcherTask extends AsyncTask<Void, Void, Archer> {
 
             //Create test archer and a HTTP entity from it
             Gson gson = new Gson();
-            a = new Archer("Testiheppu2", "Joo", false);
-            System.out.println(a.toString());
-            HttpEntity<Archer> entity = new HttpEntity<Archer>(a);
+            HttpEntity<Archer> entity = new HttpEntity<Archer>(archer);
 
             //Send POST
-            ResponseEntity<ObjectNode> res = restTemplate.postForEntity(URL, entity, ObjectNode.class);
+            String url = params[0].getString(R.string.back_end_url) + "/createArcher";
+            ResponseEntity<ObjectNode> res = restTemplate.postForEntity(url, entity, ObjectNode.class);
+
+            System.out.println("Archer " + archer.toString() + " sent to server");
 
             //@TODO: Maybe we should return a boolean that tells whether creation was successfull
             Archer responseObject = gson.fromJson(res.getBody().toString(), Archer.class);
@@ -59,7 +80,7 @@ public class CreateArcherTask extends AsyncTask<Void, Void, Archer> {
             return;
         }
 
-        System.out.println("onPostExecute called with " + a.toString());
+        System.out.println("Response from server: " + a.toString());
     }
 
 }

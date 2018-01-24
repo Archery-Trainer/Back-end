@@ -1,6 +1,8 @@
 package mqttClient;
 
 import android.content.Context;
+import android.content.res.Resources;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +15,7 @@ import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.amazonaws.services.iot.client.AWSIotQos;
 import com.amazonaws.services.iot.client.AWSIotTopic;
 import com.amazonaws.services.iot.client.AWSIotMessage;
+import com.archery.tessa.homescreen.R;
 
 
 /**
@@ -28,13 +31,10 @@ import com.amazonaws.services.iot.client.AWSIotMessage;
 public class MqttClient {
 
 	private static AWSIotMqttClient awsIotClient;
-	
-	//@TODO: How to pass this address to the MQTT server? 
-	private static final String CLIENT_ENDPOINT = "a20pmpdacgwj4.iot.us-east-1.amazonaws.com";
+
 	//CLIENT_ID needs to be unique for every client and during testing the connection gets messed up if I 
 	//make multiple subsequent connections with the same id. So here's a hacky one-liner to generate a random string
 	private static final String CLIENT_ID = Long.toHexString(Double.doubleToLongBits(Math.random()));
-	private static final String TEST_TOPIC = "#";					// # is wildcard
 	private static final AWSIotQos TestTopicQos = AWSIotQos.QOS0; 	//Don't know what this is
 
 	private static Context context;
@@ -76,9 +76,10 @@ public class MqttClient {
 			keyStore.load(is, keyStorePassword.toCharArray());
 
 			//Initialize the client with our credentials
-			awsIotClient = new AWSIotMqttClient(CLIENT_ENDPOINT, CLIENT_ID, keyStore, keyPassword);
+			String clientEndpoint = context.getString(R.string.MQTT_server_url);
+			awsIotClient = new AWSIotMqttClient(clientEndpoint, CLIENT_ID, keyStore, keyPassword);
 			
-			System.out.println("Connected to " + CLIENT_ENDPOINT + " as " + CLIENT_ID);
+			System.out.println("Connected to " + clientEndpoint + " as " + CLIENT_ID);
 			
 		
        }
@@ -142,11 +143,13 @@ public class MqttClient {
 		    init();
 
 		    awsIotClient.connect();
-		    
-		    AWSIotTopic topic = new TopicListener(TEST_TOPIC, TestTopicQos, onMsgCallback);
+
+		    String topicName = context.getString(R.string.MQTT_topic);
+
+		    AWSIotTopic topic = new TopicListener(topicName, TestTopicQos, onMsgCallback);
 		    awsIotClient.subscribe(topic, true);
 
-    		System.out.println("Subscribed to topic " + TEST_TOPIC);
+    		System.out.println("Subscribed to topic " + topicName);
 
 		} catch (IOException e) {
 			System.out.println("Exception: " + e.getMessage());
