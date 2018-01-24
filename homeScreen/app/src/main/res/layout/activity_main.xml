@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="156dp"
         android:background="@android:color/transparent"
-        android:text="Profile"
+        android:text="@string/profile"
         app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintEnd_toEndOf="@+id/button3" />
 
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="164dp"
         android:background="@android:color/transparent"
-        android:text="log out"
+        android:text="@string/logout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
