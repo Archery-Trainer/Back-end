@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 public class Archer implements Serializable {
 
+    private String  email = "";
     private String  firstName = "";
     private String  lastName = "";
     private int     coachId = -1;
@@ -15,7 +16,8 @@ public class Archer implements Serializable {
     //Name of the corresponding database table
     private static final String TABLENAME = "Athlete";
 
-    public Archer(String _firstName, String _lastName, int _coachId, int _weight, int _height, boolean _rightHanded) {
+    public Archer(String _email, String _firstName, String _lastName, int _coachId, int _weight, int _height, boolean _rightHanded) {
+        email = _email;
         firstName = _firstName;
         lastName = _lastName;
         coachId = _coachId;
@@ -24,13 +26,15 @@ public class Archer implements Serializable {
         rightHanded = _rightHanded;
     }
 
-    public Archer(String _firstName, String _lastName, boolean _rightHanded) {
+    public Archer(String _email, String _firstName, String _lastName, boolean _rightHanded) {
+        email = _email;
         firstName = _firstName;
         lastName = _lastName;
         rightHanded = _rightHanded;
     }
 
-    public Archer(String _firstName, String _lastName) {
+    public Archer(String _email, String _firstName, String _lastName) {
+        email = _email;
         firstName = _firstName;
         lastName = _lastName;
         rightHanded = true;
@@ -38,6 +42,9 @@ public class Archer implements Serializable {
 
     public Archer() {}
 
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 
     public String getFirstName() {
         return firstName;

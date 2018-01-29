@@ -37,7 +37,7 @@ public class ArcherDatabaseOperations {
     public static void insertArcher(Archer a) throws SQLException, AlreadyRegisteredException{
 
         String query = "INSERT INTO " + Archer.getTableName() +
-                " (Fname, Lname, Weight, Height, RightHanded) VALUES (?, ?, ?, ?, ?)";
+                " (AthleteId, Fname, Lname, Weight, Height, RightHanded) VALUES (?, ?, ?, ?, ?, ?)";
 
         //Create connection
         Connection conn = DriverManager.getConnection(
@@ -46,7 +46,7 @@ public class ArcherDatabaseOperations {
                 Main.databaseCredentials.getPassword());
 
         //See if archer already registered
-        if(selectArcher(a.getFirstName(), a.getLastName()) != null) {
+        if(selectArcher(a.getEmail()) != null) {
             conn.close();
 
             throw new AlreadyRegisteredException();
@@ -54,28 +54,61 @@ public class ArcherDatabaseOperations {
 
         //Create statement and set the archer's values
         PreparedStatement pstmt = conn.prepareStatement(query);
-        pstmt.setString(1, a.getFirstName());
-        pstmt.setString(2, a.getLastName());
-        pstmt.setInt(3, a.getWeight());
-        pstmt.setInt(4, a.getHeight());
-        pstmt.setBoolean(5, a.isRightHanded());
+        pstmt.setString(1, a.getEmail());
+        pstmt.setString(2, a.getFirstName());
+        pstmt.setString(3, a.getLastName());
+        pstmt.setInt(4, a.getWeight());
+        pstmt.setInt(5, a.getHeight());
+        pstmt.setBoolean(6, a.isRightHanded());
 
         pstmt.execute();
 
         conn.close();
     }
 
+    public static int getArcherNo(String email) throws SQLException {
+        String query = "SELECT AthleteNo FROM " + Archer.getTableName() +
+                " WHERE AthleteID = \"" + email + "\";";
+
+        //Create connection
+        Connection conn = DriverManager.getConnection(
+                Main.databaseCredentials.getUrl(),
+                Main.databaseCredentials.getUsername(),
+                Main.databaseCredentials.getPassword());
+
+
+        PreparedStatement pstmt = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+
+
+        ResultSet res = pstmt.executeQuery();
+
+        if(res.wasNull() || !res.first()) {
+            conn.close();
+            res.close();
+
+            return -1;
+        }
+
+        int num = res.getInt(1);
+
+
+        conn.close();
+        res.close();
+
+        return num;
+    }
+
+
     /**
      * Find archer from database
      *
-     * @param fName     First name of the archer to find
-     * @param lName     Last name of the archer to find
+     * @param email     Unique email address of the archer to find
      * @return the Archer object if found, NULL if table was empty!
      */
-    public static Archer selectArcher(String fName, String lName) throws SQLException{
+    public static Archer selectArcher(String email) throws SQLException{
 
-        String query = "SELECT * FROM " + Archer.getTableName() + " WHERE Fname = \"" + fName +
-                "\" AND Lname = \"" + lName + "\";" ;
+        String query = "SELECT * FROM " + Archer.getTableName() + " WHERE AthleteID = \""
+                + email + "\";" ;
 
         //Create connection
         Connection conn = DriverManager.getConnection(
@@ -96,12 +129,13 @@ public class ArcherDatabaseOperations {
         }
 
         Archer a = new Archer(
-                res.getString(2),   //Fname
-                res.getString(3),   //Lname
-                res.getInt(4),      //CoachId
-                res.getInt(5),      //Weight
-                res.getInt(6),      //Height
-                res.getBoolean(7)); //rightHanded
+                res.getString(2),   //email
+                res.getString(3),   //Fname
+                res.getString(4),   //Lname
+                res.getInt(5),      //CoachId
+                res.getInt(6),      //Weight
+                res.getInt(7),      //Height
+                res.getBoolean(8)); //rightHanded
 
         conn.close();
         res.close();
@@ -137,12 +171,13 @@ public class ArcherDatabaseOperations {
         //Add all archers to arraylist
         while(res.next()) {
             Archer a = new Archer(
-                    res.getString(2),   //Fname
-                    res.getString(3),   //Lname
-                    res.getInt(4),      //CoachId
-                    res.getInt(5),      //Weight
-                    res.getInt(6),      //Height
-                    res.getBoolean(7)); //rightHanded
+                    res.getString(2),   //email
+                    res.getString(3),   //Fname
+                    res.getString(4),   //Lname
+                    res.getInt(5),      //CoachId
+                    res.getInt(6),      //Weight
+                    res.getInt(7),      //Height
+                    res.getBoolean(8)); //rightHanded
 
             archers.add(a);
         }
