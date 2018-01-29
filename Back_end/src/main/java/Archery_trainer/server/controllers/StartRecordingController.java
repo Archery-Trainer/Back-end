@@ -27,7 +27,7 @@ public class StartRecordingController {
         RecordingRequest req = gson.fromJson(jsonDocument, RecordingRequest.class);
 
         //Start recording
-        boolean status= Recording.startRecording(req);
+        boolean status= Recording.startRecording(req.getArcherEmail(), req.getTimestamp());
 
         if(status)
             return new ResponseEntity<>(HttpStatus.OK);
