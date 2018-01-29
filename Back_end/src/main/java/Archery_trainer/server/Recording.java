@@ -19,7 +19,6 @@ public class Recording {
     private static List<String> messageList = new LinkedList<>();
 
     private static String archerId;
-    private static int shotId;
     private static long timestamp;
 
     //Task that will store the mqtt messages to messageList
@@ -47,19 +46,19 @@ public class Recording {
 
     /**
      * Start recording the MQTT messages
-     * @param req   The request containg archer id, shot id and timestamp
+     * @param _archerEmail   The email address of the archer to record
+     * @param _timestamp     Starting time of the recording
      *
      * @return  true if starting was successful, otherwise false
      */
-    public static boolean startRecording(RecordingRequest req) {
+    public static boolean startRecording(String _archerEmail, long _timestamp) {
 
         if(recordingThread.isAlive())
             return false;
 
 
-        archerId = req.getArcherEmail();
-        timestamp = req.getTimestamp();
-        shotId = req.getShotId();
+        archerId = _archerEmail;
+        timestamp = _timestamp;
 
         //Start MQTT-client
         if (messageHandler == null)
@@ -72,13 +71,24 @@ public class Recording {
 
     /**
      * Stop the recording, clear the messages list and get the recorded messages
+     *
      * @return  List of the messages saved during recording
      */
-    public static List<String> stopRecording(RecordingRequest req) {
+    public static List<String> stopRecording() {
 
         System.out.println("Stopping recording thread");
 
         recordingThread.interrupt();
+
+        //We need to create a 'Shot' in the database first
+        int shotId = -1;
+        try {
+            shotId = ShotDatabaseOperations.insertShot(archerId, timestamp);
+        } catch (SQLException e) {
+            System.out.println("Unable to create Shot");
+            e.printStackTrace();
+            return null;
+        }
 
         List<String> messages = messageList;
 

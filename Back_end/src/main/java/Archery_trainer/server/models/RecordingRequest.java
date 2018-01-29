@@ -5,9 +5,8 @@ public class RecordingRequest {
     private int shotId;
     private long timestamp;
 
-    public RecordingRequest(String _archerEmail, int _shotId, long _timestamp) {
+    public RecordingRequest(String _archerEmail, long _timestamp) {
         archerEmail = _archerEmail;
-        shotId = _shotId;
         timestamp = _timestamp;
     }
 
@@ -19,14 +18,6 @@ public class RecordingRequest {
         this.archerEmail = archerEmail;
     }
 
-    public int getShotId() {
-        return shotId;
-    }
-
-    public void setShotId(int shotId) {
-        this.shotId = shotId;
-    }
-
     public long getTimestamp() {
         return timestamp;
     }
@@ -36,6 +27,6 @@ public class RecordingRequest {
     }
 
     public String toString() {
-        return "Request for " + archerEmail + ", shot " + shotId + ", time " + timestamp;
+        return "Request for " + archerEmail + ", time " + timestamp;
     }
 }
