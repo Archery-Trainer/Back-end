@@ -16,18 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopRecordingController {
 
 
-    //Recieve json, convert it to Archer object and return it
     @RequestMapping(value = "/stopRecording", method = RequestMethod.POST)
-    public ResponseEntity<?> stopRecording(@RequestBody String jsonDocument) {
+    public ResponseEntity<?> stopRecording() {
 
-        System.out.println("Recieved stopRecording request: " + jsonDocument);
+        System.out.println("Recieved stopRecording request");
 
         //Create request object
-        Gson gson = new Gson();
-        RecordingRequest req = gson.fromJson(jsonDocument, RecordingRequest.class);
+//        Gson gson = new Gson();
+//        RecordingRequest req = gson.fromJson(jsonDocument, RecordingRequest.class);
 
         //Start recording
-        Recording.stopRecording(req);
+        Recording.stopRecording();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class StartRecordingController {
 
 
-    //Recieve json, convert it to Archer object and return it
+    //Recieve json, convert it to RecordingRequest object and return it
     @RequestMapping(value = "/startRecording", method = RequestMethod.POST)
     public ResponseEntity<?> startRecording(@RequestBody String jsonDocument) {
 
-        System.out.println("Recieved createArcher request: " + jsonDocument);
+        System.out.println("Recieved startRecording request: " + jsonDocument);
 
         //Create request object
         Gson gson = new Gson();
