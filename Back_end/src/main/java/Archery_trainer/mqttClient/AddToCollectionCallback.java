@@ -7,6 +7,8 @@ import java.util.Collection;
  *
  */
 public class AddToCollectionCallback implements OnMessageCallback{
+	private final int MAX_MESSAGES = 10000;
+
 	private Collection<String> storage;
 	
 	/**
@@ -23,7 +25,8 @@ public class AddToCollectionCallback implements OnMessageCallback{
 	 * @param message Message received from the MQTT-topic
 	 */
 	public void call(String message) {
-		storage.add(message);
+		if(storage.size() < MAX_MESSAGES)
+			storage.add(message);
 	}
 
 }
