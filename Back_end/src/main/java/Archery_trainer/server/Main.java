@@ -2,22 +2,17 @@ package Archery_trainer.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.context.annotation.ComponentScan;
+
 
 @RestController
 @EnableAutoConfiguration
 @ComponentScan(basePackages = {"Archery_trainer.server"})
 public class Main {
 
+	//Public container for the command line arguments used in connecting to the database
 	public static DatabaseCredentials databaseCredentials;
-
-	@RequestMapping( "/test" )
-	String test() {
-		System.out.println("test() called");
-		return "This is a test";
-	}
 
 	public static void main( String[] args ) throws Exception {
 
@@ -32,6 +27,5 @@ public class Main {
 		System.out.println("Starting server...");
 
 		SpringApplication.run( Main.class, args );
-
 	}
 }
