@@ -22,12 +22,8 @@ public class StopRecordingController {
 
         System.out.println("Recieved stopRecording request: " + jsonDocument);
 
-        //Create request object
-        Gson gson = new Gson();
-        RecordingRequest req = gson.fromJson(jsonDocument, RecordingRequest.class);
-
         //Start recording
-        Recording.stopRecording(req);
+        Recording.stopRecording();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
