@@ -41,7 +41,7 @@ public class Recording {
     };
 
     //Thread that will run recorderTask and can be interrupted
-    private static Thread recordingThread = new Thread(recordingTask);
+    private static Thread recordingThread;
 
 
     /**
@@ -53,9 +53,7 @@ public class Recording {
      */
     public static boolean startRecording(String _archerEmail, long _timestamp) {
 
-        if(recordingThread.isAlive())
-            return false;
-
+	System.out.println("Archer id: " + _archerEmail);
 
         archerId = _archerEmail;
         timestamp = _timestamp;
@@ -64,6 +62,7 @@ public class Recording {
         if (messageHandler == null)
             messageHandler = new MqttMessageHandler();
 
+	recordingThread = new Thread(recordingTask);
         recordingThread.start();
 
         return true;
@@ -77,6 +76,10 @@ public class Recording {
     public static List<String> stopRecording() {
 
         System.out.println("Stopping recording thread");
+	System.out.println("Archer id: "+ archerId);
+
+	if(recordingThread == null) //Recording not started
+		return new LinkedList<String>();
 
         recordingThread.interrupt();
 
@@ -112,7 +115,7 @@ public class Recording {
             }
         }
 
-        //Not sure if these are needed
+        //Reset state
         archerId = "";
         shotId = -1;
         timestamp = 0;
