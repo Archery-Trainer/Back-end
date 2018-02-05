@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @EnableAutoConfiguration
-public class StartRecordingController {
+public class RecordingController {
 
 
-    //Recieve json, convert it to Archer object and return it
+    /**
+     * Ask the server to start recording the MQTT-messages
+     *
+     * @param jsonDocument  An instance of Recording request
+     * @return  Http status
+     */
     @RequestMapping(value = "/startRecording", method = RequestMethod.POST)
     public ResponseEntity<?> startRecording(@RequestBody String jsonDocument) {
 
@@ -33,5 +38,23 @@ public class StartRecordingController {
             return new ResponseEntity<>(HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
+    }
+
+
+    /**
+     * Ask the server to stop recording the MQTT-messages
+     *
+     * @param jsonDocument  Empty json document
+     * @return  Http status
+     */
+    @RequestMapping(value = "/stopRecording", method = RequestMethod.POST)
+    public ResponseEntity<?> stopRecording(@RequestBody String jsonDocument) {
+
+        System.out.println("Recieved stopRecording request: " + jsonDocument);
+
+        //Start recording
+        Recording.stopRecording();
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
