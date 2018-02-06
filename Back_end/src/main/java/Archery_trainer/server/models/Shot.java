@@ -21,6 +21,14 @@ public class Shot {
         athleteNo = _athleteNo;
     }
 
+    public Shot(Date _date, Time _time, int _score, int _athleteNo) {
+        id = -1;
+        date = _date;
+        time = _time;
+        score = _score;
+        athleteNo = _athleteNo;
+    }
+
     public Shot(Date _date, Time _time, int _athleteNo) {
         id = -1;
         date = _date;
