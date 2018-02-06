@@ -1,6 +1,7 @@
 package Archery_trainer.server.controllers;
 
 import Archery_trainer.server.DatabaseCredentials;
+
 import Archery_trainer.server.databaseOperations.AlreadyRegisteredException;
 import Archery_trainer.server.models.Archer;
 import Archery_trainer.server.databaseOperations.ArcherDatabaseOperations;
@@ -81,10 +82,12 @@ public class ArcherController {
             return response;
         }
 
-        if(a == null)
+        if(a == null) {
+            System.out.println("Didn't find archer");
             return response;
+        }
 
-        System.out.println("Created new archer: " + a.toString());
+        System.out.println("Sending archer object to application: " + a.toString());
 
         Gson gson = new Gson();
         response = gson.toJson(a, Archer.class);
