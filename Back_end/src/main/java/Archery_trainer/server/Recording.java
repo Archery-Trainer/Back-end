@@ -30,13 +30,6 @@ public class Recording {
 
             AddToCollectionCallback addToList = new AddToCollectionCallback(messageList);
 
-            while (true) {
-                String res = messageHandler.getNewestMessage();
-
-                if (res.length() != 0)
-                    System.out.println(res);
-
-            }
         }
     };
 
@@ -62,7 +55,7 @@ public class Recording {
         if (messageHandler == null)
             messageHandler = new MqttMessageHandler();
 
-	recordingThread = new Thread(recordingTask);
+	    recordingThread = new Thread(recordingTask);
         recordingThread.start();
 
         return true;
