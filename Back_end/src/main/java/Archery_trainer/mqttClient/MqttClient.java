@@ -137,7 +137,10 @@ public class MqttClient {
 	}
 
 	public void disconnect() throws AWSIotException {
-		awsIotClient.disconnect();
+                System.out.println("Disconnecting AWS IOT client");
+		awsIotClient.unsubscribe(TEST_TOPIC);
+                awsIotClient.disconnect();
+                awsIotClient = null;
 	}
 		
 	
@@ -158,7 +161,7 @@ public class MqttClient {
     		System.out.println("Subscribed to topic " + TEST_TOPIC);
     		
 		} catch (Exception e) {
-			System.out.println("Exception: " + e.getClass());
+			e.printStackTrace();
 		}
 	}
 }
