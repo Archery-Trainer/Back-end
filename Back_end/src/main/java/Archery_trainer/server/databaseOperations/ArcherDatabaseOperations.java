@@ -68,7 +68,7 @@ public class ArcherDatabaseOperations {
 
     public static int getArcherNo(String email) throws SQLException {
         String query = "SELECT AthleteNo FROM " + Archer.getTableName() +
-                " WHERE AthleteID = " + email + ";";
+                " WHERE AthleteID = '" + email + "';";
 
         //Create connection
         Connection conn = DriverManager.getConnection(
