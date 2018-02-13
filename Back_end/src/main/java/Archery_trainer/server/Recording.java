@@ -61,6 +61,9 @@ public class Recording {
         } catch (SQLException e) {
             System.out.println("Unable to create Shot");
             e.printStackTrace();
+            messageHandler.cleanUp();
+            messageHandler.disconnect();
+            messageHandler = null;
             return null;
         }
 
@@ -84,6 +87,9 @@ public class Recording {
             } catch (SQLException e) {
                 System.out.println("Unable to store measurement to database");
                 e.printStackTrace();
+                messageHandler.cleanUp();
+                messageHandler.disconnect();
+                messageHandler = null;
             }
         }
 
@@ -93,7 +99,9 @@ public class Recording {
         timestamp = 0;
 
         messageHandler.cleanUp();
+        messageHandler.disconnect();
         messageHandler = null;
+
 
         return messages;
     }

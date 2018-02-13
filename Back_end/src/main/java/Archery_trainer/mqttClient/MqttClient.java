@@ -8,10 +8,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-import com.amazonaws.services.iot.client.AWSIotMqttClient;
-import com.amazonaws.services.iot.client.AWSIotQos;
-import com.amazonaws.services.iot.client.AWSIotTopic;
-import com.amazonaws.services.iot.client.AWSIotMessage;
+import com.amazonaws.services.iot.client.*;
 
 
 /**
@@ -138,6 +135,10 @@ public class MqttClient {
 		}
 
 	}
+
+	public void disconnect() throws AWSIotException {
+		awsIotClient.disconnect();
+	}
 		
 	
 	/**
@@ -150,7 +151,7 @@ public class MqttClient {
 		    init();
 
 		    awsIotClient.connect();
-		    
+
 		    AWSIotTopic topic = new TopicListener(TEST_TOPIC, TestTopicQos, onMsgCallback);
 		    awsIotClient.subscribe(topic, true);
 
