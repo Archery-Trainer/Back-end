@@ -19,6 +19,10 @@ public class MqttMessageHandler {
 		//The client is not needed anymore
 	}
 
+	public List<String> getMessages() {
+		return messages;
+	}
+
 	public String getNewestMessage() {
 
 		int sz = messages.size();
