@@ -35,8 +35,10 @@ public class Recording {
         timestamp = _timestamp;
 
         //Start MQTT-client
-        if (messageHandler == null)
+        if (messageHandler == null) {
+            System.out.println("Creating new message handler");
             messageHandler = new MqttMessageHandler();
+        }
 
         return true;
     }
