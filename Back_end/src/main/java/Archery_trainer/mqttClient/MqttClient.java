@@ -137,7 +137,7 @@ public class MqttClient {
 	}
 
 	public void disconnect() throws AWSIotException {
-		awsIotClient.disconnect();
+		awsIotClient.unsubscribe(TEST_TOPIC);
 	}
 		
 	

@@ -61,24 +61,19 @@ public class Recording {
         } catch (SQLException e) {
             System.out.println("Unable to create Shot");
             e.printStackTrace();
-            messageHandler.cleanUp();
             messageHandler.disconnect();
+            messageHandler.cleanUp();
             messageHandler = null;
             return null;
         }
 
+        //Need to disconnect before getting messages so that messages are not added and read at the same time
+        messageHandler.disconnect();
         List<String> messages = messageHandler.getMessages();
-
-        // FOR DEBUGGING IF THERE ARE NO REAL MQTT MESSAGES
-        // Date date = new Date();
-        // messages.add("{'timestamp': ' " + date.getTime() + "', 'sensors':  [{'sensorId': '1' , 'value': '404'}, {'sensorId': '2' , 'value': '505'}]}");
 
         System.out.println("Got " + messages.size() + " messages");
         Gson gson = new Gson();
         for(String msg : messages) {
-            //Storing measurements to database:
-
-            System.out.println("Message: " + msg);
 
             MeasuredDataSet measData = gson.fromJson(msg, MeasuredDataSet.class);
 
@@ -99,7 +94,6 @@ public class Recording {
         timestamp = 0;
 
         messageHandler.cleanUp();
-        messageHandler.disconnect();
         messageHandler = null;
 
 
