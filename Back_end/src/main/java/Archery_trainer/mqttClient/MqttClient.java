@@ -39,7 +39,7 @@ public class MqttClient {
 	private static AWSIotMqttClient awsIotClient;
 	
 	//@TODO: How to pass this address to the MQTT server? 
-	private static final String CLIENT_ENDPOINT = "a20pmpdacgwj4.iot.us-east-1.amazonaws.com";
+	private static final String CLIENT_ENDPOINT = "a20pmpdacgwj4.iot.eu-central-1.amazonaws.com";
 	//CLIENT_ID needs to be unique for every client and during testing the connection gets messed up if I 
 	//make multiple subsequent connections with the same id. So here's a hacky one-liner to generate a random string
 	private static final String CLIENT_ID = Long.toHexString(Double.doubleToLongBits(Math.random()));
