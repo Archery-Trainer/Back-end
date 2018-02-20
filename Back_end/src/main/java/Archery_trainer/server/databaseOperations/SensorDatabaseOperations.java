@@ -40,8 +40,6 @@ public class SensorDatabaseOperations {
             i++;
         }
 
-        System.out.println("Stored sensor data with timestamp " + (set.getTimestamp()));
-
         conn.close();
     }
 
