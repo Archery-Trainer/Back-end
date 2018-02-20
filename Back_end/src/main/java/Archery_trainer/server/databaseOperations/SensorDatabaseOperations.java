@@ -3,6 +3,7 @@ package Archery_trainer.server.databaseOperations;
 import Archery_trainer.server.Main;
 import Archery_trainer.server.models.MeasuredDataSet;
 import Archery_trainer.server.models.SensorData;
+import Archery_trainer.server.models.Sensors;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -45,26 +46,6 @@ public class SensorDatabaseOperations {
         conn.close();
     }
 
-    /**
-     * Determine whether a sensor can belong in a list of SensorData objects.
-     * It cannot if there are already 6 sensors in the list or two sensors with the same id
-     *
-     * @param list
-     * @param sensorId
-     * @return
-     */
-    private static boolean okToAddSensorDataToList(List<SensorData> list, int sensorId) {
-        if(list.size() >= 6)
-            return false;
-
-        for(SensorData s : list) {
-            if(s.getSensorId() == sensorId)
-                return false;
-        }
-
-        return true;
-    }
-
 
     public static List<MeasuredDataSet> getMeasuredDataSetsOfShot(int shotId) throws SQLException {
         List<MeasuredDataSet> readings = new LinkedList<>();
@@ -92,35 +73,30 @@ public class SensorDatabaseOperations {
             return readings;
         }
 
-
         List<SensorData> sensors = new LinkedList<>();
-        long timestamp = 0;
         while(res.next()) {
+
             int sensorId = res.getInt(4);
-
-            //If sensors already contains more than 6 entries or two entries with the same sensorId,
-            // we have gathered data from two measurement sets.
-            if(!okToAddSensorDataToList(sensors, sensorId)) {
-                //Add the gathered data into readings list and clear sensors list
-                timestamp = res.getLong(2);
-                MeasuredDataSet measurement = new MeasuredDataSet(timestamp, sensors);
-                readings.add(measurement);
-
-                sensors.clear();
-            }
+            int sensorVal = res.getInt(3);
 
             sensors.add(new SensorData(
-                    res.getInt(4), //Sensor id
-                    res.getInt(3)  //Sensor value
+                    sensorId,
+                    sensorVal
             ));
-        }
 
-        //Data left in sensors that is not added to measurements:
-        if(!sensors.isEmpty()) {
-            MeasuredDataSet measurement = new MeasuredDataSet(timestamp, sensors);
-            readings.add(measurement);
-        }
+            if(sensorId == Sensors.NUM_SENSORS) {
+                //We have gathered one set of sensor values, create a MeasuredDataSet from them
 
+                if (sensors != null && !sensors.isEmpty()) {
+                    long timestamp = res.getLong(1);
+                    MeasuredDataSet measurement = new MeasuredDataSet(timestamp, sensors);
+                    readings.add(measurement);
+                }
+
+                //Start gathering new set
+                sensors = new LinkedList<>();
+            }
+        }
 
         conn.close();
         res.close();
