@@ -1,8 +1,10 @@
 package Archery_trainer.server.controllers;
 
 import Archery_trainer.server.databaseOperations.ArcherDatabaseOperations;
+import Archery_trainer.server.databaseOperations.SensorDatabaseOperations;
 import Archery_trainer.server.databaseOperations.ShotDatabaseOperations;
 import Archery_trainer.server.models.Archer;
+import Archery_trainer.server.models.MeasuredDataSet;
 import Archery_trainer.server.models.Shot;
 import com.google.gson.Gson;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -46,6 +50,27 @@ public class ShotController {
             return "";
         }
 
+    }
+
+
+    @RequestMapping(value = "/getSensorDataOfShot", method = RequestMethod.POST)
+    public String getSensorDataOfShot(@RequestBody int shotId) {
+        System.out.println("Got getSensorDataOfShot request for shot " + shotId);
+
+        List<MeasuredDataSet> sensorData = new LinkedList<>();
+        Gson gson = new Gson();
+        try {
+            sensorData = SensorDatabaseOperations.getMeasuredDataSetsOfShot(shotId);
+        } catch (SQLException e) {
+            System.out.println("Unable to fetch sensor data of shot");
+            e.printStackTrace();
+            return gson.toJson(sensorData);
+        }
+
+
+        String response = gson.toJson(sensorData);
+
+        return response;
     }
 
 }
