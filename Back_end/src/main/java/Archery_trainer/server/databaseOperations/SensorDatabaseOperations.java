@@ -40,7 +40,7 @@ public class SensorDatabaseOperations {
 
             i++;
         }
-        
+      
         conn.close();
     }
 

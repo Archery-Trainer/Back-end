@@ -55,7 +55,7 @@ public class Recording {
 
         int shotId = -1;
         if(messageHandler == null) //Recording not started
-		    return shotId;
+		      return shotId;
 
         //We need to create a 'Shot' in the database first
         try {

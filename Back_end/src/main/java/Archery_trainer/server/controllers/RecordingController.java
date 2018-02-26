@@ -51,7 +51,7 @@ public class RecordingController {
 
         System.out.println("Recieved stopRecording request");
 
-        //Start recording
+        //Stop recording
         int shotId = Recording.stopRecording();
 
         return shotId;
