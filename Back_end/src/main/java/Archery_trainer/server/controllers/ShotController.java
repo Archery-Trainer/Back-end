@@ -7,7 +7,9 @@ import Archery_trainer.server.models.Archer;
 import Archery_trainer.server.models.MeasuredDataSet;
 import Archery_trainer.server.models.Shot;
 import com.google.gson.Gson;
+import javafx.util.Pair;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -71,6 +73,22 @@ public class ShotController {
         String response = gson.toJson(sensorData);
 
         return response;
+    }
+
+    @RequestMapping(value = "/setScoreForShot", method = RequestMethod.POST)
+    public HttpStatus setScoreForShot(@RequestBody Pair<Integer, Integer> shotIdAndScore) {
+        System.out.println("Got setScoreForShot request for shot " + shotIdAndScore.getKey()
+                + ", score: " + shotIdAndScore.getValue());
+
+        try {
+            ShotDatabaseOperations.insertScoreToShot(shotIdAndScore.getKey(), shotIdAndScore.getValue());
+        } catch (SQLException e) {
+            System.out.println("Unable to set score to shot");
+            e.printStackTrace();
+            return HttpStatus.BAD_REQUEST;
+        }
+
+        return HttpStatus.OK;
     }
 
 }

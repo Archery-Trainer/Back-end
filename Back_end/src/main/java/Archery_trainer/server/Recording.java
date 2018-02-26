@@ -46,18 +46,18 @@ public class Recording {
     /**
      * Stop the recording, clear the messages list and get the recorded messages
      *
-     * @return  List of the messages saved during recording
+     * @return  Id of the Shot that was stored in the database. -1 for failure
      */
-    public static List<String> stopRecording() {
+    public static int stopRecording() {
 
         System.out.println("Stopping recording thread");
         System.out.println("Archer id: "+ archerId);
 
+        int shotId = -1;
         if(messageHandler == null) //Recording not started
-		    return new LinkedList<String>();
+		    return shotId;
 
         //We need to create a 'Shot' in the database first
-        int shotId = -1;
         try {
             shotId = ShotDatabaseOperations.insertShot(archerId, timestamp);
         } catch (SQLException e) {
@@ -66,7 +66,7 @@ public class Recording {
             messageHandler.disconnect();
             messageHandler.cleanUp();
             messageHandler = null;
-            return null;
+            return shotId;
         }
 
         //Need to disconnect before getting messages so that messages are not added and read at the same time
@@ -99,7 +99,7 @@ public class Recording {
         messageHandler = null;
 
 
-        return messages;
+        return shotId;
     }
 
 
