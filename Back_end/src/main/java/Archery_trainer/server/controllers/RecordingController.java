@@ -44,16 +44,16 @@ public class RecordingController {
     /**
      * Ask the server to stop recording the MQTT-messages
      *
-     * @return  Http status
+     * @return  Id of the created Shot row in the database
      */
     @RequestMapping(value = "/stopRecording", method = RequestMethod.POST)
-    public ResponseEntity<?> stopRecording() {
+    public int stopRecording() {
 
         System.out.println("Recieved stopRecording request");
 
-        //Start recording
-        Recording.stopRecording();
+        //Stop recording
+        int shotId = Recording.stopRecording();
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return shotId;
     }
 }
