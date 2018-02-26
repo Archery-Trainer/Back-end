@@ -24,22 +24,20 @@ public class ShotController {
     /**
      * Get the shots that belong to a specified archer
      *
-     * @param s     Json document describing the archer object whose shots to get
+     * @param email     email the archer whose shots to get
      * @return      List of Shot objects as a Json document
      */
     @RequestMapping(value = "/getShotsOfArcher", method = RequestMethod.POST)
-    public String getShotsOfArcher(@RequestBody String s) {
-        System.out.println("Recieved getShotsOfArcher request: " + s);
+    public String getShotsOfArcher(@RequestBody String email) {
+        System.out.println("Recieved getShotsOfArcher request: " + email);
 
         try {
-            //Create Archer object from the received json
-            Gson gson = new Gson();
-            Archer a = gson.fromJson(s, Archer.class);
 
-            int archerNo = ArcherDatabaseOperations.getArcherNo(a.getEmail());
+            int archerNo = ArcherDatabaseOperations.getArcherNo(email);
 
             List<Shot> shots = ShotDatabaseOperations.getShotsOfArcher(archerNo);
 
+            Gson gson = new Gson();
             String response = gson.toJson(shots);
 
             System.out.println("Sending response: " + response);

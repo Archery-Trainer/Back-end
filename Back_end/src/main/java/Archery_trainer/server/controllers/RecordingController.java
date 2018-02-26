@@ -25,7 +25,7 @@ public class RecordingController {
     @RequestMapping(value = "/startRecording", method = RequestMethod.POST)
     public ResponseEntity<?> startRecording(@RequestBody String jsonDocument) {
 
-        System.out.println("Recieved createArcher request: " + jsonDocument);
+        System.out.println("Recieved startRecording request: " + jsonDocument);
 
         //Create request object
         Gson gson = new Gson();
@@ -44,13 +44,12 @@ public class RecordingController {
     /**
      * Ask the server to stop recording the MQTT-messages
      *
-     * @param jsonDocument  Empty json document
      * @return  Http status
      */
     @RequestMapping(value = "/stopRecording", method = RequestMethod.POST)
-    public ResponseEntity<?> stopRecording(@RequestBody String jsonDocument) {
+    public ResponseEntity<?> stopRecording() {
 
-        System.out.println("Recieved stopRecording request: " + jsonDocument);
+        System.out.println("Recieved stopRecording request");
 
         //Start recording
         Recording.stopRecording();

@@ -28,7 +28,7 @@ public class SensorDatabaseOperations {
 
             //Create statement and set the values
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setDate(1, new Date(set.getTimestamp()));
+            pstmt.setLong(1, set.getTimestamp());
             pstmt.setInt(2, dataItem.getValue());
 
             //@TODO This should be handled with enums, currently the id is string in the model and int in the database

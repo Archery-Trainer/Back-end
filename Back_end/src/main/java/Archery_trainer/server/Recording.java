@@ -16,33 +16,9 @@ import java.lang.Thread;
 public class Recording {
 
     private static MqttMessageHandler messageHandler;
-    private static List<String> messageList = new LinkedList<>();
 
     private static String archerId;
     private static long timestamp;
-
-    //Task that will store the mqtt messages to messageList
-    private static final Runnable recordingTask = new Runnable() {
-        @Override
-        public void run() {
-
-            System.out.println("Starting recording thread");
-
-            AddToCollectionCallback addToList = new AddToCollectionCallback(messageList);
-
-            while (true) {
-                String res = messageHandler.getNewestMessage();
-
-                if (res.length() != 0)
-                    System.out.println(res);
-
-            }
-        }
-    };
-
-    //Thread that will run recorderTask and can be interrupted
-    private static Thread recordingThread;
-
 
     /**
      * Start recording the MQTT messages
@@ -53,17 +29,16 @@ public class Recording {
      */
     public static boolean startRecording(String _archerEmail, long _timestamp) {
 
-	System.out.println("Archer id: " + _archerEmail);
+	    System.out.println("Archer id: " + _archerEmail);
 
         archerId = _archerEmail;
         timestamp = _timestamp;
 
         //Start MQTT-client
-        if (messageHandler == null)
+        if (messageHandler == null) {
+            System.out.println("Creating new message handler");
             messageHandler = new MqttMessageHandler();
-
-	recordingThread = new Thread(recordingTask);
-        recordingThread.start();
+        }
 
         return true;
     }
@@ -76,12 +51,10 @@ public class Recording {
     public static List<String> stopRecording() {
 
         System.out.println("Stopping recording thread");
-	System.out.println("Archer id: "+ archerId);
+        System.out.println("Archer id: "+ archerId);
 
-	if(recordingThread == null) //Recording not started
-		return new LinkedList<String>();
-
-        recordingThread.interrupt();
+        if(messageHandler == null) //Recording not started
+		    return new LinkedList<String>();
 
         //We need to create a 'Shot' in the database first
         int shotId = -1;
@@ -90,20 +63,19 @@ public class Recording {
         } catch (SQLException e) {
             System.out.println("Unable to create Shot");
             e.printStackTrace();
+            messageHandler.disconnect();
+            messageHandler.cleanUp();
+            messageHandler = null;
             return null;
         }
 
-        List<String> messages = messageList;
+        //Need to disconnect before getting messages so that messages are not added and read at the same time
+        messageHandler.disconnect();
+        List<String> messages = messageHandler.getMessages();
 
-        // FOR DEBUGGING IF THERE ARE NO REAL MQTT MESSAGES
-        // Date date = new Date();
-        // messages.add("{'timestamp': ' " + date.getTime() + "', 'sensors':  [{'sensorId': '1' , 'value': '404'}, {'sensorId': '2' , 'value': '505'}]}");
-
+        System.out.println("Got " + messages.size() + " messages");
         Gson gson = new Gson();
         for(String msg : messages) {
-            //Storing measurements to database:
-
-            System.out.println("Message: " + msg);
 
             MeasuredDataSet measData = gson.fromJson(msg, MeasuredDataSet.class);
 
@@ -112,6 +84,9 @@ public class Recording {
             } catch (SQLException e) {
                 System.out.println("Unable to store measurement to database");
                 e.printStackTrace();
+                messageHandler.cleanUp();
+                messageHandler.disconnect();
+                messageHandler = null;
             }
         }
 
@@ -120,7 +95,9 @@ public class Recording {
         shotId = -1;
         timestamp = 0;
 
-        messageList.clear();
+        messageHandler.cleanUp();
+        messageHandler = null;
+
 
         return messages;
     }
