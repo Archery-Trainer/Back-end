@@ -7,7 +7,6 @@ import Archery_trainer.server.models.Archer;
 import Archery_trainer.server.models.MeasuredDataSet;
 import Archery_trainer.server.models.Shot;
 import com.google.gson.Gson;
-import javafx.util.Pair;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,12 +75,12 @@ public class ShotController {
     }
 
     @RequestMapping(value = "/setScoreForShot", method = RequestMethod.POST)
-    public HttpStatus setScoreForShot(@RequestBody Pair<Integer, Integer> shotIdAndScore) {
-        System.out.println("Got setScoreForShot request for shot " + shotIdAndScore.getKey()
-                + ", score: " + shotIdAndScore.getValue());
+    public HttpStatus setScoreForShot(@RequestBody int[] shotIdAndScore) {
+        System.out.println("Got setScoreForShot request for shot " + shotIdAndScore[0]
+                + ", score: " + shotIdAndScore[1]);
 
         try {
-            ShotDatabaseOperations.insertScoreToShot(shotIdAndScore.getKey(), shotIdAndScore.getValue());
+            ShotDatabaseOperations.insertScoreToShot(shotIdAndScore[0], shotIdAndScore[1]);
         } catch (SQLException e) {
             System.out.println("Unable to set score to shot");
             e.printStackTrace();

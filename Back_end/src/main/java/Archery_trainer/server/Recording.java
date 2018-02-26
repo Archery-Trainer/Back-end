@@ -92,7 +92,6 @@ public class Recording {
 
         //Reset state
         archerId = "";
-        shotId = -1;
         timestamp = 0;
 
         messageHandler.cleanUp();
