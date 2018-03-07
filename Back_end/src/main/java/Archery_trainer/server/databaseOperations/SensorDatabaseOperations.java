@@ -56,7 +56,7 @@ public class SensorDatabaseOperations {
 
 
         String query = "SELECT * FROM " + MeasuredDataSet.getTableName() +
-                " WHERE ShotID=" + shotId + ";";
+                " WHERE ShotID=" + shotId + " ORDER BY SensorReadingsID ASC;";
 
         System.out.println("Fetching all measurements from shot " + shotId);
 
@@ -86,7 +86,8 @@ public class SensorDatabaseOperations {
                 //We have gathered one set of sensor values, create a MeasuredDataSet from them
 
                 if (sensors != null && !sensors.isEmpty()) {
-                    long timestamp = res.getLong(1);
+                    long timestamp = res.getLong(2);
+
                     MeasuredDataSet measurement = new MeasuredDataSet(timestamp, sensors);
                     readings.add(measurement);
                 }
