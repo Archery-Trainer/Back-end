@@ -29,7 +29,7 @@ public class ShotController {
      * @return      List of Shot objects as a Json document
      */
     @RequestMapping(value = "/getShotsOfArcher", method = RequestMethod.POST)
-    public String getShotsOfArcher(@RequestBody String email) {
+    public List<Shot> getShotsOfArcher(@RequestBody String email) {
         System.out.println("Recieved getShotsOfArcher request: " + email);
 
         try {
@@ -38,17 +38,17 @@ public class ShotController {
 
             List<Shot> shots = ShotDatabaseOperations.getShotsOfArcher(archerNo);
 
-            Gson gson = new Gson();
-            String response = gson.toJson(shots);
+            //Gson gson = new Gson();
+            //String response = gson.toJson(shots);
 
-            System.out.println("Sending response: " + response);
+            System.out.println("Sending response with " + shots.size() + " shots" );
 
-            return response;
+            return shots;
 
         } catch (Exception e) {
 
-            System.out.println(e.getMessage());
-            return "";
+            e.printStackTrace();
+            return new LinkedList<Shot>();
         }
 
     }
