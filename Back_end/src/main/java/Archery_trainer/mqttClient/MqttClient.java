@@ -95,7 +95,8 @@ public class MqttClient {
 	}
 	
 	/**
-	 * 
+	 * Set the AWSIotMqttClient client to this object
+	 *
 	 * @param c the client to set
 	 */
 	public static void setClient(AWSIotMqttClient c) {
@@ -115,7 +116,7 @@ public class MqttClient {
 		 * Construct a TopicListener
 		 * 
 		 * @param topic	Topic to subscribe to
-		 * @param qos	?
+		 * @param qos
 		 */
 		public TopicListener(String topic, AWSIotQos qos, OnMessageCallback onMsgCallback) {
 		    super(topic, qos);
@@ -136,18 +137,24 @@ public class MqttClient {
 
 	}
 
+	/**
+	 * Unsubscribe and disconnect from the MQTT-server
+	 *
+	 * @throws AWSIotException
+	 */
 	public void disconnect() throws AWSIotException {
 
-                System.out.println("Disconnecting AWS IOT client");
+		System.out.println("Disconnecting AWS IOT client");
 		awsIotClient.unsubscribe(TEST_TOPIC);
-                awsIotClient.disconnect();
-                awsIotClient = null;
+		awsIotClient.disconnect();
+		awsIotClient = null;
 	}
-		
-	
+
+
 	/**
-	 * Construct client and subscribe to topic #. 
-	 * 
+	 * Construct client and subscribe to topic #.
+	 *
+	 * @param onMsgCallback	Function to call when a message arrives
 	 */
 	public MqttClient(OnMessageCallback onMsgCallback) {
 		try {

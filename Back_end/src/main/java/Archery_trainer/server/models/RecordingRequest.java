@@ -1,5 +1,8 @@
 package Archery_trainer.server.models;
 
+/**
+ * Request that the server receives when the user wants it to start recording the MQTT-channel
+ */
 public class RecordingRequest {
     private String archerEmail;
     private int shotId;

@@ -6,6 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.context.annotation.ComponentScan;
 
 
+/**
+ * Run the server application
+ *
+ * Database name, username and password need to be passed as command line arguments
+ */
 @RestController
 @EnableAutoConfiguration
 @ComponentScan(basePackages = {"Archery_trainer.server"})

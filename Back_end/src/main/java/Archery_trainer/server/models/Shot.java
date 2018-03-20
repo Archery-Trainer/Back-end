@@ -77,6 +77,10 @@ public class Shot {
         athleteNo = athleteNo;
     }
 
+    /**
+     *
+     * @return The name of the corresponding database table
+     */
     public static String getTableName() {
         return TABLENAME;
     }

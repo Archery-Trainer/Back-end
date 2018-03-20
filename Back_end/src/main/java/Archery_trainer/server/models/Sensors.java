@@ -1,5 +1,8 @@
 package Archery_trainer.server.models;
 
+/**
+ * Names of the sensors
+ */
 public enum Sensors {
     SENSOR_LTRAP,
     SENSOR_RTRAP,

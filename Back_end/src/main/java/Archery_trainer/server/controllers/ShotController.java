@@ -54,6 +54,11 @@ public class ShotController {
     }
 
 
+    /**
+     * Get all the saved sensor data of a single shot
+     * @param shotId    The shot whose data to get
+     * @return          MeasuredDataSets related to shot
+     */
     @RequestMapping(value = "/getSensorDataOfShot", method = RequestMethod.POST)
     public String getSensorDataOfShot(@RequestBody int shotId) {
         System.out.println("Got getSensorDataOfShot request for shot " + shotId);
@@ -74,6 +79,12 @@ public class ShotController {
         return response;
     }
 
+    /**
+     * Set the score for a shot
+     *
+     * @param shotIdAndScore    The shot id and score to set
+     * @return                  HTTP status
+     */
     @RequestMapping(value = "/setScoreForShot", method = RequestMethod.POST)
     public HttpStatus setScoreForShot(@RequestBody int[] shotIdAndScore) {
         System.out.println("Got setScoreForShot request for shot " + shotIdAndScore[0]

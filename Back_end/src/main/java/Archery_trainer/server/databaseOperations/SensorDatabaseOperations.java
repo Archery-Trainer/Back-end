@@ -11,6 +11,13 @@ import java.util.List;
 
 public class SensorDatabaseOperations {
 
+    /**
+     * Insert sensor data to a shot in the database
+     *
+     * @param set       The sensor values
+     * @param shotId    The corresponding shot id
+     * @throws SQLException
+     */
     public static void insertMeasuredDataSet(MeasuredDataSet set, int shotId) throws SQLException{
 
         //Create connection
@@ -45,6 +52,13 @@ public class SensorDatabaseOperations {
     }
 
 
+    /**
+     * Get sensor data of a single shot
+     *
+     * @param shotId    The shot whose data to set
+     * @return          The sensor data
+     * @throws SQLException
+     */
     public static List<MeasuredDataSet> getMeasuredDataSetsOfShot(int shotId) throws SQLException {
         List<MeasuredDataSet> readings = new LinkedList<>();
 

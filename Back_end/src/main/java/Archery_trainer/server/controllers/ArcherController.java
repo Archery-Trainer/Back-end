@@ -1,7 +1,5 @@
 package Archery_trainer.server.controllers;
 
-import Archery_trainer.server.DatabaseCredentials;
-
 import Archery_trainer.server.databaseOperations.AlreadyRegisteredException;
 import Archery_trainer.server.models.Archer;
 import Archery_trainer.server.databaseOperations.ArcherDatabaseOperations;
@@ -96,6 +94,11 @@ public class ArcherController {
     }
 
 
+    /**
+     * Get all registered archer objects
+     *
+     * @return  All registered archers
+     */
     @RequestMapping(value = "/getAllArchers")
     public String getAllArchers() {
         String response = "";

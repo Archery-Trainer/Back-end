@@ -8,7 +8,12 @@ import java.util.ArrayList;
 
 public class ArcherDatabaseOperations {
 
-    //Return the highest archer id in database
+    /**
+     * Return the highest archer index in database
+     *
+     * @return The highest archer index
+     * @throws SQLException
+     */
     public static int getMaxIndexArcher() throws SQLException {
 
         String query = "SELECT MAX(Id) FROM " + Archer.getTableName() + ";";
@@ -34,6 +39,13 @@ public class ArcherDatabaseOperations {
     }
 
 
+    /**
+     * Insert a new archer to the database
+     *
+     * @param a The archer to insert
+     * @throws SQLException
+     * @throws AlreadyRegisteredException
+     */
     public static void insertArcher(Archer a) throws SQLException, AlreadyRegisteredException{
 
         String query = "INSERT INTO " + Archer.getTableName() +
@@ -66,6 +78,12 @@ public class ArcherDatabaseOperations {
         conn.close();
     }
 
+    /**
+     * Get the index of an archer
+     * @param email     Unique identifying string of the archer
+     * @return          The index of the archer in the database
+     * @throws SQLException
+     */
     public static int getArcherNo(String email) throws SQLException {
         String query = "SELECT AthleteNo FROM " + Archer.getTableName() +
                 " WHERE AthleteID = ";
@@ -158,6 +176,12 @@ public class ArcherDatabaseOperations {
         return a;
     }
 
+    /**
+     * Get all archers from the database
+     *
+     * @return  ArrayList of all the archers
+     * @throws SQLException
+     */
     public static ArrayList<Archer> selectAllArchers() throws SQLException {
 
         ArrayList<Archer> archers = new ArrayList<>();
@@ -203,10 +227,15 @@ public class ArcherDatabaseOperations {
         return archers;
     }
 
-    public static void deleteArcher(String fName, String lName) throws  SQLException{
+    /**
+     * Delete an archer from the database
+     *
+     * @param email     Email of the archer to delete
+     * @throws SQLException
+     */
+    public static void deleteArcher(String email) throws  SQLException{
 
-        String query = "DELETE FROM " + Archer.getTableName() + " WHERE Fname = \"" + fName +
-                "\" AND Lname = \"" + lName + "\";" ;
+        String query = "DELETE FROM " + Archer.getTableName() + " WHERE Email = \"" + email + "\";" ;
 
         //Create connection
         Connection conn = DriverManager.getConnection(

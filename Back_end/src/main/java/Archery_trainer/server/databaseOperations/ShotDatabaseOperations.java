@@ -54,6 +54,13 @@ public class ShotDatabaseOperations {
         return shotId;
     }
 
+    /**
+     * Insert a score value to a shot in the database
+     *
+     * @param shotId    The shot whose score to set
+     * @param score     The score value
+     * @throws SQLException
+     */
     public static void insertScoreToShot(int shotId, int score) throws SQLException {
         //Create connection
         Connection conn = DriverManager.getConnection(
@@ -75,6 +82,13 @@ public class ShotDatabaseOperations {
 
     }
 
+    /**
+     * Get the shots that belong to an archer
+     *
+     * @param archerNo      Index of the archer in the database
+     * @return              List of the archer's shots
+     * @throws SQLException
+     */
     public static List<Shot> getShotsOfArcher(int archerNo) throws SQLException {
         List<Shot> shots = new LinkedList<>();
 
