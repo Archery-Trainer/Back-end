@@ -21,10 +21,11 @@ public class Main {
 
 	public static void main( String[] args ) throws Exception {
 
-		if(args.length == 3) {
-			databaseCredentials = new DatabaseCredentials(args[0], args[1], args[2]);
+		if(args.length == 4) {
+			databaseCredentials = new DatabaseCredentials(args[0], args[1], args[2], args[3]);
 		} else {
-			System.out.println("Arguments: <database name> <database username> <database password>");
+			System.out.println("Only got " + args.length + " arguments ");
+			System.out.println("Arguments: <database address> <database name> <database username> <database password>");
 			return;
 		}
 
